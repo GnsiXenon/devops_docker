@@ -1,0 +1,31 @@
+services:
+  service1:
+    build:
+      context: ./Api
+      dockerfile: Dockerfile
+    ports:
+      - "7000:3000"
+    networks:
+      - geoguessr-network
+
+  service2:
+    build:
+      context: ./geoguessr
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    networks:
+      - geoguessr-network
+
+  service3:
+    build:
+      context: ./service3
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+    networks:
+      - geoguessr-network
+
+networks:
+  geoguessr-network:
+    driver: bridge
