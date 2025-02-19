@@ -1,0 +1,34 @@
+// This file is generated temporarily, the configuration is not actually stored here.
+{
+  "database": {
+    "1704873948846": {
+      "host": "10.44.17.117",
+      "port": 3306,
+      "user": "root",
+      "password": "root",
+      "dbType": "MySQL",
+      "name": "Geoguessr_Ynov",
+      "advance": {
+        "hideSystemSchema": true,
+        "safeUpdateMode": false,
+        "groupingTables": false,
+        "showForeignKey": false
+      },
+      "timezone": "+00:00",
+      "usingSSH": false,
+      "useSocksProxy": false,
+      "global": true,
+      "savePassword": "Forever",
+      "readonly": false,
+      "sort": 11,
+      "useSSL": false,
+      "fs": {
+        "showHidden": true
+      },
+      "key": "1704873948846",
+      "connectionKey": "database.connections"
+    }
+  },
+  "nosql": null,
+  "$schema": "https://dbclient-release.oss-cn-hongkong.aliyuncs.com/dbclient/schema_new.json"
+}
