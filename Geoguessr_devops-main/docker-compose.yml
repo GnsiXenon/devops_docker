@@ -1,5 +1,5 @@
 services:
-  service1:
+  api:
     build:
       context: ./Api
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
     networks:
       - geoguessr-network
 
-  service2:
+  geoguessr:
     build:
       context: ./geoguessr
       dockerfile: Dockerfile
@@ -16,7 +16,7 @@ services:
       - "5002:5002"
     networks:
       - geoguessr-network
-      
+
 networks:
   geoguessr-network:
     driver: bridge
