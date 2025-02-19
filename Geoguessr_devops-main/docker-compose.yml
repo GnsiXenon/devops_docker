@@ -16,16 +16,7 @@ services:
       - "5002:5002"
     networks:
       - geoguessr-network
-
-  service3:
-    build:
-      context: ./service3
-      dockerfile: Dockerfile
-    ports:
-      - "5003:5003"
-    networks:
-      - geoguessr-network
-
+      
 networks:
   geoguessr-network:
     driver: bridge
