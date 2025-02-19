@@ -1,6 +1,6 @@
 # heberger le serveur golang sur un container docker 
 
-FROM golang:1.16-alpine
+FROM golang:1.21-alpine
 
 WORKDIR /app
 
