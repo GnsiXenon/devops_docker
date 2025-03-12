@@ -1,22 +1,56 @@
-# Geoguessr_Hackathon
+# Projet GeoGuessr - DevOps
 
-Pour lancer le projet 
+Nous sommmes une équipe de 4 pour ce projet DevOps. Notre but c'est de faire un petit clone de GeoGuessr version YNOV🌍
 
-cloner le github 
+## L'équipe
+- [Rayen]
+- [Tom.S]
+- [Matheo.H]
+- [Kylian]
 
-Deux facon de lancer l'app 
+## C'est quoi le projet?
+On a fait une appli web avec:
+- Du Next.js pour le front 
+- Une API en Go 
+- MySQL pour la bdd
 
-Soit faire 
+## Comment lancer le projet
 
-Dans le dossier geoguessr
-`npm i`
-`npm run dev`
+D'abord faut installer:
+- Docker
+- Docker compose
 
-Dans le dossier Api
+Ensuite:
+1) Clone le repo
+```
+git clone [url-du-repo]
+```
 
-`go run main.go`
+2) Lance tout avec docker compose
+```
+docker compose up --build
+```
 
-Ou sinon 
+Si ça marche pas du premier coup, essaie `docker compose down` et relance
 
-Lancer les Dockerfile qui se situe dans les dossier geoguessr et Api 
-les command pour les lancer sont dedans
+## Les ports
+- front -> localhost:3000
+- api -> localhost:7000
+- bdd -> 3306 (mysql)
+
+## Les routes de l'api
+- `/test-db` -> verifie si la bdd marche
+- `/score` -> pour les scores (get/post)
+- `/salle` -> gestion des rooms
+- `/image` -> recup les images
+- `/login` -> connexion
+
+## Trucs importants
+- On utilise docker
+- Les données de la bdd sont pas perdues grace aux volumes
+- Ya des commentaires dans le code si vous comprenez pas un truc
+
+TODO: 
+- [ ] Ajouter plus de tests
+- [ ] Finir la page de score
+- [ ] Mettre à jour les images
