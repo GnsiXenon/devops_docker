@@ -4,7 +4,7 @@ services:
       context: ./Api
       dockerfile: Dockerfile
     ports:
-      - "7000:3000"
+      - "7000:7000"
     networks:
       - geoguessr-network
 
@@ -13,7 +13,7 @@ services:
       context: ./geoguessr
       dockerfile: Dockerfile
     ports:
-      - "5002:5002"
+      - "3000:3000"
     networks:
       - geoguessr-network
 
