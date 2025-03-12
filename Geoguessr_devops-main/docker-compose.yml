@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   api:
     build:
@@ -7,6 +9,12 @@ services:
       - "7000:7000"
     networks:
       - geoguessr-network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=your_user
+      - DB_PASSWORD=your_password
+      - DB_NAME=your_database
 
   geoguessr:
     build:
@@ -17,6 +25,23 @@ services:
     networks:
       - geoguessr-network
 
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password  
+      - MYSQL_DATABASE=your_database      
+      - MYSQL_USER=your_user              
+      - MYSQL_PASSWORD=your_password      
+    volumes:
+      - db-data:/var/lib/mysql            
+    networks:
+      - geoguessr-network
+    ports:
+      - "3306:3306"                       
+
 networks:
   geoguessr-network:
     driver: bridge
+
+volumes:
+  db-data:
