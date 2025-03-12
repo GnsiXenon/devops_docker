@@ -12,9 +12,11 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_USER=your_user
-      - DB_PASSWORD=your_password
-      - DB_NAME=your_database
+      - DB_USER=geoguessr_user
+      - DB_PASSWORD=geoguessr_secure_password
+      - DB_NAME=geoguessr_db
+    depends_on:
+      - db
 
   geoguessr:
     build:
@@ -24,20 +26,23 @@ services:
       - "3000:3000"
     networks:
       - geoguessr-network
+    depends_on:
+      - api
 
   db:
     image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password  
-      - MYSQL_DATABASE=your_database      
-      - MYSQL_USER=your_user              
-      - MYSQL_PASSWORD=your_password      
+      - MYSQL_ROOT_PASSWORD=root_secure_password
+      - MYSQL_DATABASE=geoguessr_db
+      - MYSQL_USER=geoguessr_user
+      - MYSQL_PASSWORD=geoguessr_secure_password
     volumes:
-      - db-data:/var/lib/mysql            
+      - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - geoguessr-network
     ports:
-      - "3306:3306"                       
+      - "3306:3306"
 
 networks:
   geoguessr-network:
