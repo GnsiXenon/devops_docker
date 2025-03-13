@@ -10,7 +10,6 @@ function Page() {
     const [x, setX] = React.useState(0.0);
     const [y, setY] = React.useState(0.0);
     const [floor, setFloor] = React.useState(0);
-    const [image, setImage] = React.useState(null);
 
     async function sendData(e: { preventDefault: () => void }) {
         e.preventDefault();
@@ -27,7 +26,6 @@ function Page() {
                     "cordinnates_y": y,
                     "floor": floor,
                     "disponibility": true,
-                    "photo": image
                     }),
             });
 
@@ -119,7 +117,6 @@ function Page() {
                 <input type='number' step={0.01} placeholder='coordonnée x' onChange={handleX} />
                 <input type='number' step={0.01} placeholder='coordonnée y' onChange={handleY} />
                 <input type='number' placeholder='étage' onChange={handleEntierChange} />
-                <input type='file' accept='image/*' onChange={handleFileChange} />
                 <button type='submit'>envoyer</button>
             </form>
 
