@@ -3,4 +3,26 @@ CREATE TABLE IF NOT EXISTS scores (
     player_name VARCHAR(255) NOT NULL,
     score INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-); 
+);
+
+CREATE TABLE scoreboard (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Score INT NOT NULL,
+    Name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE room (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Coordinates_x DOUBLE NOT NULL,
+    Coordinates_y DOUBLE NOT NULL,
+    Floor INT NOT NULL,
+    Disponibility BOOLEAN NOT NULL,
+    Photo TEXT
+);
+
+CREATE TABLE login (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(255) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
