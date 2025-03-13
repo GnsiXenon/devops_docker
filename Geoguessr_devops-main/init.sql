@@ -26,3 +26,15 @@ CREATE TABLE login (
     Username VARCHAR(255) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL
 );
+
+-- Insertion de données dans scoreboard
+INSERT INTO scoreboard (Score, Name) VALUES (100, 'Alice'), (200, 'Bob'), (150, 'Charlie');
+
+-- Insertion de données dans room
+INSERT INTO room (Name, Coordinates_x, Coordinates_y, Floor, Disponibility, Photo)
+VALUES ('Salle A', 45.76, 4.84, 1, TRUE, 'salle_a.jpg'),
+       ('Salle B', 45.77, 4.85, 2, FALSE, 'salle_b.jpg'),
+       ('Salle C', 45.78, 4.86, 3, TRUE, 'salle_c.jpg');
+
+-- Insertion de données dans login
+INSERT INTO login (Username, Password) VALUES ('user1', 'pass123'), ('user2', 'secure456'), ('user3', 'mypassword');
