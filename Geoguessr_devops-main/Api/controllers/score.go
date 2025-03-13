@@ -8,63 +8,75 @@ import (
 	"main.go/models"
 )
 
-type ScoreRequest struct {
-	PlayerName string `json:"player_name"`
-	Score      int    `json:"score"`
-}
-
-func Score(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
-	w.Header().Set("Content-Type", "application/json")
-
+func Score(w http.ResponseWriter, r *http.Request) { // GET a Score by id
+	enableCors(&w) // On autorise les requêtes cross-origin
 	switch r.Method {
-	case "GET":
-		if r.URL.Path == "/score" {
+	case "GET": // Method GET
+		if r.URL.Path == "/score" { // Si l'url est /score
 			scores := models.GetAllScore()
-			json.NewEncoder(w).Encode(scores)
+			json.NewEncoder(w).Encode(scores) // On encode les scores en json
 			return
 		}
 
-		idStr := r.URL.Path[len("/score/"):]
+		idStr := r.URL.Path[len("/score/"):] // On récupère l'id du score dans l'url
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			RespondWithError(w, http.StatusBadRequest, "400", "ID invalide")
+			http.Error(w, "Invalid ID", http.StatusBadRequest)
 			return
 		}
 
-		score := models.GetScore(id)
-		if score == (models.Score{}) {
-			RespondWithError(w, http.StatusNotFound, "404", "Score introuvable")
+		score := models.GetScore(id)   // On récupère le score dans la base de données avec l'id
+		if score == (models.Score{}) { // Si le score n'existe pas
+			// afficher un message d'erreur 404 en json
+			RespondWithError(w, http.StatusNotFound, "404", "Score not found")
 			return
 		}
-		json.NewEncoder(w).Encode(score)
+		json.NewEncoder(w).Encode(score) // On encode le score en json
+	case "POST": // Method POST
+		var score models.Score
+		score.Name = r.FormValue("name")
+		scoreInt, err := strconv.Atoi(r.FormValue("score"))
+		if err != nil {
+			http.Error(w, "Invalid score", http.StatusBadRequest)
+			return
+		}
+		score.Score = scoreInt
 
-	case "POST":
-		var scoreReq ScoreRequest
-		if err := json.NewDecoder(r.Body).Decode(&scoreReq); err != nil {
-			RespondWithError(w, http.StatusBadRequest, "400", "Format JSON invalide")
+		models.AddScore(score) // On ajoute le score dans la base de données
+
+	case "DELETE": // Method DELETE
+		idStr := r.URL.Path[len("/score/"):] // On récupère l'id du score dans l'url
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "Invalid ID", http.StatusBadRequest)
 			return
 		}
 
-		score := models.Score{
-			Name:  scoreReq.PlayerName,
-			Score: scoreReq.Score,
-		}
-
-		if err := models.AddScore(score); err != nil {
-			RespondWithError(w, http.StatusInternalServerError, "500", "Erreur lors de l'ajout du score")
+		models.DeleteScore(id)                     // On supprime le score dans la base de données
+		json.NewEncoder(w).Encode("Score deleted") // On encode le message en json
+	case "PUT": // Method PUT
+		idStr := r.URL.Path[len("/score/"):] // On récupère l'id du score dans l'url
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "Invalid ID", http.StatusBadRequest)
 			return
 		}
+		var score models.Score
+		score.Name = r.FormValue("name")
+		scoreInt, err := strconv.Atoi(r.FormValue("score"))
+		if err != nil {
+			http.Error(w, "Invalid score", http.StatusBadRequest)
+			return
+		}
+		score.Id = id
+		score.Score = scoreInt
 
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(map[string]string{
-			"message": "Score ajouté avec succès",
-		})
-
+		models.UpdateScore(score)
+		json.NewEncoder(w).Encode("Score updated")
 	case "OPTIONS":
 		w.WriteHeader(http.StatusOK)
 
 	default:
-		RespondWithError(w, http.StatusMethodNotAllowed, "405", "Méthode non autorisée")
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 }
