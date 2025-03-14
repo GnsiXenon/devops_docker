@@ -1,41 +1,30 @@
-# heberger le serveur golang sur un container docker 
-
-FROM golang:1.21-alpine
+# Étape 1 : Build de l'application
+FROM golang:1.21-alpine AS builder
 
 WORKDIR /app
 
-COPY . .
+# Copier uniquement les fichiers nécessaires au build
+COPY go.mod go.sum ./
 
-# remove go.mod and go.sum 
-
-RUN rm go.mod go.sum
-
-# install go mod
-
-RUN go mod init main.go
-
-# download all dependencies "github.com/go-sql-driver/mysql " "github.com/lib/pq"
-
-RUN go get -u github.com/go-sql-driver/mysql
-
-RUN go get -u github.com/lib/pq
-
+# Télécharger les dépendances en cache (accélère les builds futurs)
 RUN go mod tidy
 
+# Copier le reste des fichiers source
+COPY . .
+
+# Compiler l’application en binaire
 RUN go build -o main .
 
+# Étape 2 : Image finale minimaliste
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Copier uniquement le binaire depuis l'étape de build
+COPY --from=builder /app/main .
+
+# Exposer le port 7000
 EXPOSE 7000
 
+# Lancer l’application
 CMD ["./main"]
-
-# docker build -t geoguessr_api .
-
-# docker run -d -p 7000:7000 geoguessr_api 
-
-# Api lancé sur le port 7000
-
-# docker stop geoguessr_api
-
-
-
-
