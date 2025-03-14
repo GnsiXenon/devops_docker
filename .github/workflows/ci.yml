@@ -3,22 +3,19 @@ name: Build and Deploy Docker App
 on:
   push:
     branches:
-      - main  # Déclenche l'action lors des pushs sur la branche main
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Utiliser l'OS Ubuntu pour exécuter les actions
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build Docker image
+    - name: Install Railway CLI
       run: |
-        docker build -t geoguessr .
+        curl -fsSL https://railway.app/install.sh | sh
 
-    - name: Notify (ou d'autres actions selon ton workflow)
-      run: echo "Déploiement complet"
+    - name: Deploy Docker Containers
+      run: railway up
