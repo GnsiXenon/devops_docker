@@ -12,9 +12,9 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_USER=geoguessr_user
-      - DB_PASSWORD=geoguessr_secure_password
-      - DB_NAME=geoguessr_db
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     depends_on:
       - db
 
@@ -32,10 +32,10 @@ services:
   db:
     image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=root_secure_password
-      - MYSQL_DATABASE=geoguessr_db
-      - MYSQL_USER=geoguessr_user
-      - MYSQL_PASSWORD=geoguessr_secure_password
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
