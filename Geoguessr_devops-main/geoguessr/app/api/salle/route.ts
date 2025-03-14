@@ -3,13 +3,13 @@ export async function GET(request: Request) {
     const id = searchParams.get('id')
     var pokemon
     if (id !== null) {
-       pokemon = await fetch(`http://localhost:7000/salle/${id}`, {
+      pokemon = await fetch(`http://api:7000/salle/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
     } else {
-      pokemon = await fetch(`http://localhost:7000/salle`, {
+      pokemon = await fetch(`http://api:7000/salle`, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -28,7 +28,7 @@ func GetAllScore() Scores {
 
 	for rows.Next() {
 		var score Score
-		if err := rows.Scan(&score.Id, &score.Name, &score.Score); err != nil {
+		if err := rows.Scan(&score.Id, &score.Score, &score.Name); err != nil {
 			log.Fatal(err)
 		}
 		scores = append(scores, score)
@@ -48,7 +48,7 @@ func GetScore(id int) Score {
 	defer rows.Close()
 
 	for rows.Next() {
-		if err := rows.Scan(&score.Id, &score.Name, &score.Score); err != nil {
+		if err := rows.Scan(&score.Id, &score.Score, &score.Name); err != nil {
 			log.Fatal(err)
 		}
 	}

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 
 	"main.go/config"
@@ -24,7 +25,7 @@ func GetAllSalle() Salles {
 
 	var salles Salles
 
-	rows, err := config.Db().Query("SELECT id, name, coordinate_x, coordinate_y, floor, disponibility, photo FROM room")
+	rows, err := config.Db().Query("SELECT id, name, coordinates_x, coordinates_y, floor, disponibility, photo FROM room")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,7 +46,7 @@ func GetSalle(id int) Salle {
 
 	var salle Salle
 
-	rows, err := config.Db().Query("SELECT id, name, coordinate_x, coordinate_y, floor, disponibility, photo FROM room WHERE id = ?", id)
+	rows, err := config.Db().Query("SELECT id, name, coordinates_x, coordinates_y, floor, disponibility, photo FROM room WHERE id = ?", id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,14 +62,18 @@ func GetSalle(id int) Salle {
 
 func AddSalle(salle Salle) {
 	//ceci est un commentaire
-	stmt, err := config.Db().Prepare("INSERT INTO room(name, coordinate_x, coordinate_y, floor, disponibility) VALUES(?,?,?,?,?)")
+	stmt, err := config.Db().Prepare("INSERT INTO room(name, coordinates_x, coordinates_y, floor, disponibility,photo) VALUES(?,?,?,?,?,?)")
 	if err != nil {
+		fmt.Println("1")
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
+	salle.Photo = "uploads/b.png"
+
 	_, err = stmt.Exec(salle.Name, salle.Cordinnates_x, salle.Cordinnates_y, salle.Floor, salle.Disponibility, salle.Photo)
 	if err != nil {
+		fmt.Println("2")
 		log.Fatal(err)
 	}
 }
@@ -87,7 +92,7 @@ func DeleteSalle(id int) {
 }
 
 func UpdateSalle(salle Salle) {
-	stmt, err := config.Db().Prepare("UPDATE room SET name = ?, coordinate_x = ?, coordinate_y = ?, floor = ?, disponibility = ? WHERE id = ?")
+	stmt, err := config.Db().Prepare("UPDATE room SET name = ?, coordinates_x = ?, coordinates_y = ?, floor = ?, disponibility = ? WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}

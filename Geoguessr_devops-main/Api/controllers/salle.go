@@ -5,13 +5,11 @@ import (
 	"net/http"
 	"strconv"
 
-	"main.go/config"
 	"main.go/models"
 )
 
 const uploadDirectory = "./uploads/"
 const maxUploadSize = 10 * 1024 * 1024 // 10 MB
-
 
 func Salle(w http.ResponseWriter, r *http.Request) {
 	// Add CORS headers
@@ -45,15 +43,7 @@ func Salle(w http.ResponseWriter, r *http.Request) {
 			RespondWithError(w, http.StatusBadRequest, "400", "Invalid JSON payload")
 			return
 		}
-
-
-		//insert the new room in the database
-		_, err = config.Db().Exec("INSERT INTO room (id, name, coordinate_x, coordinate_y, floor, disponibility, photo) VALUES (?, ?, ?, ?, ?, ?, ?)", salle.Id, salle.Name, salle.Cordinnates_x, salle.Cordinnates_y, salle.Floor, salle.Disponibility, salle.Photo)
-
-		if err != nil {
-			http.Error(w, "Unable to insert the room", http.StatusInternalServerError)
-			return
-		}
+		models.AddSalle(salle) // On ajoute la salle dans la base de données
 
 		w.WriteHeader(http.StatusCreated) // On renvoie le code 201
 

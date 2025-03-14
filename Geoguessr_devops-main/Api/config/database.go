@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 
@@ -15,7 +16,6 @@ var db *sql.DB
 
 func DatabaseInit() {
 	var err error
-
 	fmt.Println("Connecting to database...")
 
 	dbHost := os.Getenv("DB_HOST")
@@ -24,21 +24,25 @@ func DatabaseInit() {
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		dbUser, dbPassword, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+	fmt.Println(dsn)
 
-	db, err = sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatal(err)
+	// Tentatives répétées de connexion
+	for i := 0; i < 5; i++ {
+		db, err = sql.Open("mysql", dsn)
+		if err == nil {
+			err = db.Ping()
+		}
+		if err == nil {
+			fmt.Println("Connected to database!")
+			return
+		}
+
+		fmt.Printf("Tentative %d de connexion à la base de données échouée: %v\n", i+1, err)
+		time.Sleep(5 * time.Second) // Attendre 5 secondes avant de réessayer
 	}
 
-	// Vérifier la connexion
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("Erreur de connexion à la base de données:", err)
-	}
-
-	fmt.Println("Connected to database!")
+	log.Fatal("Impossible de se connecter à la base de données après plusieurs tentatives:", err)
 }
 
 func GetLengthRoom() int {

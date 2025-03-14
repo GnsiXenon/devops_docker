@@ -1,10 +1,3 @@
-CREATE TABLE IF NOT EXISTS scores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    player_name VARCHAR(255) NOT NULL,
-    score INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE scoreboard (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     Score INT NOT NULL,
@@ -38,3 +31,4 @@ VALUES ('Salle A', 45.76, 4.84, 1, TRUE, 'salle_a.jpg'),
 
 -- Insertion de données dans login
 INSERT INTO login (Username, Password) VALUES ('user1', 'pass123'), ('user2', 'secure456'), ('user3', 'mypassword');
+INSERT INTO login (Username, Password) VALUES ('admin', '123');
